@@ -2,7 +2,7 @@ using NUnit.Framework;
 
 namespace Squawk_Security.Tests
 {
-    public class Tests
+    public class ReportTests
     {
         [SetUp]
         public void Setup()
