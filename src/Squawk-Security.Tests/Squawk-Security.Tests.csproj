@@ -17,4 +17,8 @@
     <PackageReference Include="SharpPcap" Version="5.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Squawk-Security.ClassLibrary\Squawk-Security.ClassLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
