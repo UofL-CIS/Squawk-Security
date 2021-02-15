@@ -1,7 +1,8 @@
 ﻿using Autofac;
+using Squawk_Security.ClassLibrary;
 using Squawk_Security.ClassLibrary.Services;
 
-namespace Squawk_Security.ClassLibrary
+namespace Squawk_Security.WorkerService
 {
     internal static class Dependencies
     {
@@ -16,7 +17,7 @@ namespace Squawk_Security.ClassLibrary
                 builder.RegisterType<ISniffingService>().As<SharpPcapSniffingService>();
                 builder.RegisterType<IAnalysisService>().As<RoleBasedAnalysisService>();
                 builder.RegisterType<IPreventionService>().As<DeAuthenticationPreventionService>();
-                builder.RegisterType<IReportingService>().As<SeriLogReportingService>();
+                builder.RegisterType<IReportingService>().As<SerilogReportingService>();
 
                 _container = builder.Build();
             }

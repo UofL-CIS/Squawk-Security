@@ -6,12 +6,12 @@ namespace Squawk_Security.Tests
 {
     public class PreventionServiceTests
     {
-        private Mock<IPreventionService> _preventionService;
+        private IPreventionService _preventionService;
 
         [SetUp]
         public void Setup()
         {
-            _preventionService = new Mock<IPreventionService>();
+            _preventionService = new Mock<IPreventionService>().Object;
         }
 
         [Test]

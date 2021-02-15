@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Squawk_Security.ClassLibrary
 {
-    public class IPreventionService
+    public interface IPreventionService
     {
     }
 }
