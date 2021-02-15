@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  squawk-security.workerservice:
+    container_name: idps
+    image: ${DOCKER_REGISTRY-}squawksecurityworkerservice
+    build:
+      context: .
+      dockerfile: Squawk-Security.WorkerService/Dockerfile
+    links:
+        - seq
+    depends_on:
+        - seq
+
+  seq:
+    container_name: seq
+    image: datalust/seq:latest
+    ports:
+        - 8081:80
+    environment:
+        - ACCEPT_EULA=Y
