@@ -1,44 +1,42 @@
+using System;
+using System.Text;
 using Moq;
 using NUnit.Framework;
+using PacketDotNet;
 using SharpPcap;
 using Squawk_Security.ClassLibrary;
+using Squawk_Security.ClassLibrary.Models;
+using Squawk_Security.ClassLibrary.Services;
 
 namespace Squawk_Security.Tests
 {
     public class AnalysisServiceTests
     {
+        private IRuleSet _ruleSet;
         private IAnalysisService _analysisService;
 
         [SetUp]
         public void Setup()
         {
-            _analysisService = new Mock<IAnalysisService>().Object;
+            _ruleSet = new Mock<IRuleSet>()
+                .Object;
+
+            _analysisService = new Mock<RoleBasedAnalysisService>()
+                .Object;
         }
 
-        [Test]
-        public void SharpPcap_HasCapturableDevicesTest()
+        [TestCase("", true)]
+        [TestCase("", false)]
+        public void AnalyzePacketTest(string packetData, bool isCompliant)
         {
-            //Arrange
-            CaptureDeviceList deviceList;
+            var capture = new RawCapture(LinkLayers.Ethernet, new PosixTimeval(DateTime.Now), Encoding.UTF8.GetBytes(packetData));
 
-            //Act
-            deviceList = CaptureDeviceList.Instance;
+            var result = _analysisService.AnalyzePacket(capture);
 
-            //Assert
-            Assert.IsTrue(deviceList.Count > 0);
-        }
-
-        [Test]
-        public void SharpPcap_HasVersionNumberTest()
-        {
-            //Arrange
-            string sharpPcapVersion;
-
-            //Act
-            sharpPcapVersion = Version.VersionString;
-
-            //Assert
-            Assert.IsFalse(string.IsNullOrEmpty(sharpPcapVersion));
+            if (isCompliant)
+                Assert.IsTrue(result.Compliancy == Compliancy.Compliant);
+            else
+                Assert.IsFalse(result.Compliancy == Compliancy.Noncompliant);
         }
     }
 }

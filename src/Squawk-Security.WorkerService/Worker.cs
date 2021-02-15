@@ -7,7 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Autofac;
 using Serilog;
+using SharpPcap;
 using Squawk_Security.ClassLibrary;
+using Squawk_Security.ClassLibrary.Models;
 
 namespace Squawk_Security.WorkerService
 {
@@ -32,14 +34,34 @@ namespace Squawk_Security.WorkerService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            _sniffingService.OnPcapArrival += SniffingService_OnPcapArrival;
+            _sniffingService.StartListening();
+
             while (!stoppingToken.IsCancellationRequested)
             {
-                
+                await Task.Delay(1000, stoppingToken);
             }
+
+            _sniffingService.OnPcapArrival -= SniffingService_OnPcapArrival;
+            _sniffingService.StopListening();
 
             const string msg = "Worker was cancelled";
             _logger.LogCritical(msg);
-            throw new ApplicationException(msg);
+        }
+
+        private void SniffingService_OnPcapArrival(object sender, EventArgs e)
+        {
+            var capture = ((CaptureEventArgs)e).Packet;
+
+            var evaluatedNetworkMessage = _analysisService.AnalyzePacket(capture);
+
+            if (evaluatedNetworkMessage.Compliancy == Compliancy.Noncompliant)
+            {
+                _reportingService.SendEmail("Countermesaures were invoked");
+                _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);
+            }
+
+            _reportingService.SendEvaluatedNetworkMessage(evaluatedNetworkMessage);
         }
     }
 }

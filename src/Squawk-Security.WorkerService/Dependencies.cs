@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Squawk_Security.ClassLibrary;
+using Squawk_Security.ClassLibrary.Models;
 using Squawk_Security.ClassLibrary.Services;
 
 namespace Squawk_Security.WorkerService
@@ -14,6 +15,7 @@ namespace Squawk_Security.WorkerService
             {
                 var builder = new ContainerBuilder();
 
+                builder.RegisterType<IRuleSet>().As<XmlRuleSet>();
                 builder.RegisterType<ISniffingService>().As<SharpPcapSniffingService>();
                 builder.RegisterType<IAnalysisService>().As<RoleBasedAnalysisService>();
                 builder.RegisterType<IPreventionService>().As<DeAuthenticationPreventionService>();

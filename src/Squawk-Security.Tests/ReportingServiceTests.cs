@@ -41,7 +41,8 @@ namespace Squawk_Security.Tests
             // Arrange
             using (TestCorrelator.CreateContext())
             {
-                _reportingService = new Mock<SerilogReportingService>(Log.Logger).Object;
+                _reportingService = new Mock<SerilogReportingService>(Log.Logger)
+                    .Object;
 
                 // Act
                 _reportingService.SendEmail(body);
@@ -67,7 +68,8 @@ namespace Squawk_Security.Tests
 
             using (TestCorrelator.CreateContext())
             {
-                _reportingService = new Mock<SerilogReportingService>(Log.Logger).Object;
+                _reportingService = new Mock<SerilogReportingService>(Log.Logger)
+                    .Object;
 
                 // Act
                 _reportingService.SendEvaluatedNetworkMessage(networkMessage);
