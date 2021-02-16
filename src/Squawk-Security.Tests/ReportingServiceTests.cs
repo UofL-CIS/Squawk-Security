@@ -25,7 +25,7 @@ namespace Squawk_Security.Tests
 {
     public class ReportingServiceTests
     {
-        private IReportingService _reportingService;
+        private Mock<IReportingService> _reportingService;
 
         [SetUp]
         public void Setup()
@@ -41,11 +41,11 @@ namespace Squawk_Security.Tests
             // Arrange
             using (TestCorrelator.CreateContext())
             {
-                _reportingService = new Mock<SerilogReportingService>(Log.Logger)
-                    .Object;
+                _reportingService = new Mock<IReportingService>(Log.Logger)
+                    ;
 
                 // Act
-                _reportingService.SendEmail(body);
+                _reportingService.Object.SendEmail(body);
             }
 
             var events = TestCorrelator.GetLogEventsFromCurrentContext().ToList();
@@ -68,18 +68,18 @@ namespace Squawk_Security.Tests
 
             using (TestCorrelator.CreateContext())
             {
-                _reportingService = new Mock<SerilogReportingService>(Log.Logger)
-                    .Object;
+                _reportingService = new Mock<IReportingService>(Log.Logger)
+                    ;
 
                 // Act
-                _reportingService.SendEvaluatedNetworkMessage(networkMessage);
+                _reportingService.Object.SendEvaluatedNetworkMessage(networkMessage);
             }
 
             var events = TestCorrelator.GetLogEventsFromCurrentContext().ToList();
 
             // Assert
             Assert.IsTrue(events.Count > 0);
-            Assert.IsTrue(events.Any(x => x.Level == (isCompliant ? LogEventLevel.Information : LogEventLevel.Warning)), "Log level was not Warning!");
+            Assert.IsTrue(events.Any(x => x.Level == (isCompliant ? LogEventLevel.Information : LogEventLevel.Warning)), "Log level was not correct!");
             Assert.IsTrue(events[0].Properties.TryGetValue(template, out var msgPropertyValue));
             Assert.IsNotNull(msgPropertyValue);
         }

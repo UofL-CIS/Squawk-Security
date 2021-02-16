@@ -12,13 +12,13 @@ namespace Squawk_Security.Tests
 {
     public class PreventionServiceTests
     {
-        private IPreventionService _preventionService;
+        private new Mock<IPreventionService> _preventionService;
 
         [SetUp]
         public void Setup()
         {
-            _preventionService = new Mock<DeAuthenticationPreventionService>()
-                .Object;
+            _preventionService = new Mock<IPreventionService>()
+                ;
         }
 
         [TestCase("", true)]
@@ -30,10 +30,10 @@ namespace Squawk_Security.Tests
             var evaluatedNetworkMessage = new EvaluatedNetworkMessage(DateTime.Now, new RawCapture(LinkLayers.Ethernet, new PosixTimeval(DateTime.Now), Encoding.UTF8.GetBytes(packetData)), compliancy);
 
             // Act
-            _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);
+            _preventionService.Object.InvokeCountermeasures(evaluatedNetworkMessage);
 
             // Assert
-            Assert.Pass();
+            Assert.Fail();
         }
     }
 }

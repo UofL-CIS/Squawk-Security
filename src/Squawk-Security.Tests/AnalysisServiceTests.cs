@@ -12,17 +12,17 @@ namespace Squawk_Security.Tests
 {
     public class AnalysisServiceTests
     {
-        private IRuleSet _ruleSet;
-        private IAnalysisService _analysisService;
+        private Mock<IRuleSet> _ruleSet;
+        private Mock<IAnalysisService> _analysisService;
 
         [SetUp]
         public void Setup()
         {
             _ruleSet = new Mock<IRuleSet>()
-                .Object;
+                ;
 
-            _analysisService = new Mock<RoleBasedAnalysisService>()
-                .Object;
+            _analysisService = new Mock<IAnalysisService>()
+                ;
         }
 
         [TestCase("", true)]
@@ -31,7 +31,7 @@ namespace Squawk_Security.Tests
         {
             var capture = new RawCapture(LinkLayers.Ethernet, new PosixTimeval(DateTime.Now), Encoding.UTF8.GetBytes(packetData));
 
-            var result = _analysisService.AnalyzePacket(capture);
+            var result = _analysisService.Object.AnalyzePacket(capture);
 
             if (isCompliant)
                 Assert.IsTrue(result.Compliancy == Compliancy.Compliant);

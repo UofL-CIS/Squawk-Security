@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Autofac;
 using Serilog;
 using SharpPcap;
 using Squawk_Security.ClassLibrary;
@@ -21,15 +20,18 @@ namespace Squawk_Security.WorkerService
         private readonly IPreventionService _preventionService;
         private readonly IReportingService _reportingService;
 
-        public Worker(ILogger<Worker> logger)
+        public Worker(
+            ILogger<Worker> logger,
+            ISniffingService sniffingService,
+            IAnalysisService analysisService,
+            IPreventionService preventionService,
+            IReportingService reportingService)
         {
             _logger = logger;
-
-            var container = Dependencies.GetContainer();
-            _sniffingService = container.Resolve<ISniffingService>();
-            _analysisService = container.Resolve<IAnalysisService>();
-            _preventionService = container.Resolve<IPreventionService>();
-            _reportingService = container.Resolve<IReportingService>();
+            _sniffingService = sniffingService;
+            _analysisService = analysisService;
+            _preventionService = preventionService;
+            _reportingService = reportingService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -44,9 +46,8 @@ namespace Squawk_Security.WorkerService
 
             _sniffingService.OnPcapArrival -= SniffingService_OnPcapArrival;
             _sniffingService.StopListening();
-
-            const string msg = "Worker was cancelled";
-            _logger.LogCritical(msg);
+            
+            _logger.LogCritical("Worker was cancelled");
         }
 
         private void SniffingService_OnPcapArrival(object sender, EventArgs e)
@@ -57,7 +58,7 @@ namespace Squawk_Security.WorkerService
 
             if (evaluatedNetworkMessage.Compliancy == Compliancy.Noncompliant)
             {
-                _reportingService.SendEmail("Countermesaures were invoked");
+                _reportingService.SendEmail("Countermeasures were invoked");
                 _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);
             }
 

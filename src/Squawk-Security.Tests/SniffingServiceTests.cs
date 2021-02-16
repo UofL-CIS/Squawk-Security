@@ -12,13 +12,13 @@ namespace Squawk_Security.Tests
 {
     public class SniffingServiceTests
     {
-        private ISniffingService _sniffingService;
+        private Mock<ISniffingService> _mockSniffingService;
 
         [SetUp]
         public void Setup()
         {
-            _sniffingService = new Mock<SharpPcapSniffingService>()
-                .Object;
+            _mockSniffingService = new Mock<ISniffingService>()
+                ;
         }
 
         [Test]
@@ -54,13 +54,13 @@ namespace Squawk_Security.Tests
             bool packetSniffed = false;
 
             //Act
-            _sniffingService.OnPcapArrival += (sender, args) =>
+            _mockSniffingService.Object.OnPcapArrival += (sender, args) =>
             {
                 packetSniffed = true;
-                _sniffingService.StopListening();
+                _mockSniffingService.Object.StopListening();
             };
 
-            _sniffingService.StartListening();
+            _mockSniffingService.Object.StartListening();
 
             //Assert
             Assert.IsTrue(packetSniffed);

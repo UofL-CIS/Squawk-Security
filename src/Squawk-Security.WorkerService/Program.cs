@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using Squawk_Security.ClassLibrary;
+using Squawk_Security.ClassLibrary.Models;
+using Squawk_Security.ClassLibrary.Services;
 
 namespace Squawk_Security.WorkerService
 {
@@ -41,6 +44,11 @@ namespace Squawk_Security.WorkerService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
+                    services.AddTransient<IRuleSet, XmlRuleSet>();
+                    services.AddScoped<ISniffingService, SharpPcapSniffingService>();
+                    services.AddScoped<IAnalysisService, RoleBasedAnalysisService>();
+                    services.AddScoped<IPreventionService, DeAuthenticationPreventionService>();
+                    services.AddScoped<IReportingService, SerilogReportingService>();
                 });
     }
 }
