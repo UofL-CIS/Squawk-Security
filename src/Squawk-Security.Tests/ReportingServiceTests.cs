@@ -7,19 +7,13 @@
 
 using System;
 using System.Linq;
-using System.Net;
-using System.Text;
 using Moq;
 using NUnit.Framework;
-using PacketDotNet;
 using Serilog;
-using Serilog.Configuration;
 using Serilog.Events;
 using Serilog.Sinks.TestCorrelator;
-using SharpPcap;
 using Squawk_Security.ClassLibrary;
 using Squawk_Security.ClassLibrary.Models;
-using Squawk_Security.ClassLibrary.Services;
 
 namespace Squawk_Security.Tests
 {

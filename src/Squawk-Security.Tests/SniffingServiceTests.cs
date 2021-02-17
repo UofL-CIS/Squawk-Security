@@ -1,12 +1,7 @@
-using System;
 using Moq;
 using NUnit.Framework;
-using PacketDotNet;
 using SharpPcap;
 using Squawk_Security.ClassLibrary;
-using Squawk_Security.ClassLibrary.Models;
-using Squawk_Security.ClassLibrary.Services;
-using Version = SharpPcap.Version;
 
 namespace Squawk_Security.Tests
 {
@@ -51,7 +46,7 @@ namespace Squawk_Security.Tests
         public void PacketsAreSniffableTest()
         {
             //Arrange
-            bool packetSniffed = false;
+            var packetSniffed = false;
 
             //Act
             _mockSniffingService.Object.OnPcapArrival += (sender, args) =>

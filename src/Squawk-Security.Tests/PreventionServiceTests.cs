@@ -6,13 +6,12 @@ using PacketDotNet;
 using SharpPcap;
 using Squawk_Security.ClassLibrary;
 using Squawk_Security.ClassLibrary.Models;
-using Squawk_Security.ClassLibrary.Services;
 
 namespace Squawk_Security.Tests
 {
     public class PreventionServiceTests
     {
-        private new Mock<IPreventionService> _preventionService;
+        private Mock<IPreventionService> _preventionService;
 
         [SetUp]
         public void Setup()
