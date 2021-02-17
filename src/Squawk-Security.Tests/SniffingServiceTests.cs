@@ -1,7 +1,11 @@
+using System;
+using System.Text;
 using Moq;
 using NUnit.Framework;
+using PacketDotNet;
 using SharpPcap;
 using Squawk_Security.ClassLibrary;
+using Version = SharpPcap.Version;
 
 namespace Squawk_Security.Tests
 {
@@ -12,8 +16,7 @@ namespace Squawk_Security.Tests
         [SetUp]
         public void Setup()
         {
-            _mockSniffingService = new Mock<ISniffingService>()
-                ;
+            _mockSniffingService = new Mock<ISniffingService>();
         }
 
         [Test]
@@ -47,13 +50,16 @@ namespace Squawk_Security.Tests
         {
             //Arrange
             var packetSniffed = false;
+            var capture = new RawCapture(LinkLayers.Ethernet, new PosixTimeval(DateTime.Now), null);
+            var device = new Mock<ICaptureDevice>().Object;
+
+            _mockSniffingService
+                .Setup(x => x.StartListening())
+                .Raises(x => x.OnPcapArrival += null, new CaptureEventArgs(capture, device));
 
             //Act
             _mockSniffingService.Object.OnPcapArrival += (sender, args) =>
-            {
                 packetSniffed = true;
-                _mockSniffingService.Object.StopListening();
-            };
 
             _mockSniffingService.Object.StartListening();
 
