@@ -9,13 +9,13 @@ namespace Squawk_Security.ClassLibrary.Models
     {
         public readonly DateTime Timestamp;
         public readonly RawCapture Capture;
-        public readonly Compliancy Compliancy;
+        public readonly ComplianceLevel ComplianceLevel;
 
-        public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, Compliancy compliancy)
+        public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, ComplianceLevel complianceLevel)
         {
             Timestamp = timestamp;
             Capture = capture;
-            Compliancy = compliancy;
+            ComplianceLevel = complianceLevel;
         }
     }
 }

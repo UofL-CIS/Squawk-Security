@@ -14,15 +14,16 @@ namespace Squawk_Security.ClassLibrary.Services
 
         public SharpPcapSniffingService()
         {
+            var desiredLinkLayer = LinkLayers.Ethernet;
             var devices = CaptureDeviceList.Instance;
 
             if (devices.Count == 0)
                 throw new NoCaptureDevicesAvailableException();
             
-            if (devices.All(d => d.LinkType != LinkLayers.Ethernet))
+            if (devices.All(d => d.LinkType != desiredLinkLayer))
                 throw new NoCaptureDevicesAvailableException("No ethernet device was available for capture");
 
-            _captureDevice = devices.First(d => d.LinkType == LinkLayers.Ethernet);
+            _captureDevice = devices.First(d => d.LinkType == desiredLinkLayer);
         }
 
         ~SharpPcapSniffingService()

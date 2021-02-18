@@ -7,7 +7,7 @@ namespace Squawk_Security.ClassLibrary.Models
 {
     public class XmlRuleSet : IRuleSet
     {
-        public bool CheckCompliancy(Packet getPacket)
+        public bool CheckCompliance(Packet getPacket)
         {
             throw new NotImplementedException();
         }

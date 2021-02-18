@@ -20,13 +20,13 @@ namespace Squawk_Security.ClassLibrary.Services
         {
             EvaluatedNetworkMessage evaluatedNetworkMessage;
 
-            if (_ruleSet.CheckCompliancy(capture.GetPacket()))
+            if (_ruleSet.CheckCompliance(capture.GetPacket()))
             {
-                evaluatedNetworkMessage = new EvaluatedNetworkMessage(capture.Timeval.Date, capture, Compliancy.Compliant);
+                evaluatedNetworkMessage = new EvaluatedNetworkMessage(capture.Timeval.Date, capture, ComplianceLevel.Compliant);
             }
             else
             {
-                evaluatedNetworkMessage = new EvaluatedNetworkMessage(capture.Timeval.Date, capture, Compliancy.Noncompliant);
+                evaluatedNetworkMessage = new EvaluatedNetworkMessage(capture.Timeval.Date, capture, ComplianceLevel.Noncompliant);
             }
 
             return evaluatedNetworkMessage;

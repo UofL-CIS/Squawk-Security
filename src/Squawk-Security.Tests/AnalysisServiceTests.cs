@@ -18,11 +18,8 @@ namespace Squawk_Security.Tests
         [SetUp]
         public void Setup()
         {
-            _ruleSet = new Mock<IRuleSet>()
-                ;
-
-            _analysisService = new Mock<IAnalysisService>()
-                ;
+            _ruleSet = new Mock<IRuleSet>();
+            _analysisService = new Mock<IAnalysisService>();
         }
 
         [TestCase("", true)]
@@ -34,9 +31,9 @@ namespace Squawk_Security.Tests
             var result = _analysisService.Object.AnalyzePacket(capture);
 
             if (isCompliant)
-                Assert.IsTrue(result.Compliancy == Compliancy.Compliant);
+                Assert.IsTrue(result.ComplianceLevel == ComplianceLevel.Compliant);
             else
-                Assert.IsFalse(result.Compliancy == Compliancy.Noncompliant);
+                Assert.IsFalse(result.ComplianceLevel == ComplianceLevel.Noncompliant);
         }
     }
 }

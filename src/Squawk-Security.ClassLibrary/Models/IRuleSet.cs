@@ -7,6 +7,6 @@ namespace Squawk_Security.ClassLibrary.Models
 {
     public interface IRuleSet
     {
-        bool CheckCompliancy(Packet getPacket);
+        bool CheckCompliance(Packet getPacket);
     }
 }

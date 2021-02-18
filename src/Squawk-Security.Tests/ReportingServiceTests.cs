@@ -58,7 +58,7 @@ namespace Squawk_Security.Tests
             // Arrange
             var networkMessage = new EvaluatedNetworkMessage(DateTime.Now,
                 null,
-                isCompliant ? Compliancy.Compliant : Compliancy.Noncompliant);
+                isCompliant ? ComplianceLevel.Compliant : ComplianceLevel.Noncompliant);
 
             using (TestCorrelator.CreateContext())
             {

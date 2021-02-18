@@ -1,11 +1,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
 using SharpPcap;
 using Squawk_Security.ClassLibrary;
 using Squawk_Security.ClassLibrary.Models;
@@ -33,35 +30,44 @@ namespace Squawk_Security.WorkerService
             _preventionService = preventionService;
             _reportingService = reportingService;
         }
-
+        
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            // Start sniffing
             _sniffingService.OnPcapArrival += SniffingService_OnPcapArrival;
             _sniffingService.StartListening();
 
+            // Continue service until requested to stop
             while (!stoppingToken.IsCancellationRequested)
             {
                 await Task.Delay(1000, stoppingToken);
             }
 
+            // Stop sniffing
             _sniffingService.OnPcapArrival -= SniffingService_OnPcapArrival;
             _sniffingService.StopListening();
-            
+
             _logger.LogCritical("Worker was cancelled");
         }
 
         private void SniffingService_OnPcapArrival(object sender, EventArgs e)
         {
+            // This is a hardcoded dependency on SharpPcap.CaptureEventArgs
             var capture = ((CaptureEventArgs)e).Packet;
 
+            // Check packet for complianceLevel
             var evaluatedNetworkMessage = _analysisService.AnalyzePacket(capture);
 
-            if (evaluatedNetworkMessage.Compliancy == Compliancy.Noncompliant)
+            if (evaluatedNetworkMessage.ComplianceLevel == ComplianceLevel.Noncompliant)
             {
+                // Notify administrator via email
                 _reportingService.SendEmail("Countermeasures were invoked");
+
+                // Counter non-compliant packet source
                 _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);
             }
 
+            // Log Pcap
             _reportingService.SendEvaluatedNetworkMessage(evaluatedNetworkMessage);
         }
     }
