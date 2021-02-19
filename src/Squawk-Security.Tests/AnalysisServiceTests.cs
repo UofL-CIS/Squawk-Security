@@ -12,13 +12,13 @@ namespace Squawk_Security.Tests
 {
     public class AnalysisServiceTests
     {
-        private Mock<IRuleSet> _ruleSet;
+        private Mock<IComplianceChecker> _complianceChecker;
         private Mock<IAnalysisService> _analysisService;
 
         [SetUp]
         public void Setup()
         {
-            _ruleSet = new Mock<IRuleSet>();
+            _complianceChecker = new Mock<IComplianceChecker>();
             _analysisService = new Mock<IAnalysisService>();
         }
 

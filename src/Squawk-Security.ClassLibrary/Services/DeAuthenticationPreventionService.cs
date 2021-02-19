@@ -15,6 +15,10 @@ namespace Squawk_Security.ClassLibrary.Services
 
         public void InvokeCountermeasures(EvaluatedNetworkMessage evaluatedNetworkMessage)
         {
+            #if DEBUG
+            return;
+            #endif
+            
             throw new NotImplementedException();
         }
 

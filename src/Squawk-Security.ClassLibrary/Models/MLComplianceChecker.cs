@@ -5,9 +5,11 @@ using PacketDotNet;
 
 namespace Squawk_Security.ClassLibrary.Models
 {
-    public class XmlRuleSet : IRuleSet
+    public class MLComplianceChecker : IComplianceChecker
     {
-        public bool CheckCompliance(Packet getPacket)
+
+
+        public bool Check(Packet getPacket)
         {
             throw new NotImplementedException();
         }

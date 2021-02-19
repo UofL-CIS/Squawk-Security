@@ -5,8 +5,8 @@ using PacketDotNet;
 
 namespace Squawk_Security.ClassLibrary.Models
 {
-    public interface IRuleSet
+    public interface IComplianceChecker
     {
-        bool CheckCompliance(Packet getPacket);
+        bool Check(Packet getPacket);
     }
 }

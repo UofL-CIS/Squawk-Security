@@ -8,7 +8,7 @@ namespace Squawk_Security.ClassLibrary.Services
 {
     public class SharpPcapSniffingService : ISniffingService
     {
-        private ICaptureDevice _captureDevice;
+        private readonly ICaptureDevice _captureDevice;
 
         public event EventHandler OnPcapArrival;
 

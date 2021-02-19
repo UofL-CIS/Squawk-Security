@@ -15,21 +15,10 @@ namespace Squawk_Security.ClassLibrary.Services
             _logger = logger;
         }
 
-        public void SendEmail(string content) => _logger.Warning("{emailContent}", content);
-        
-        public void SendEvaluatedNetworkMessage(EvaluatedNetworkMessage evaluatedNetworkMessage)
-        {
-            switch (evaluatedNetworkMessage.ComplianceLevel)
-            {
-                case ComplianceLevel.Compliant:
-                    _logger.Information("{evaluatedNetworkMessage}", evaluatedNetworkMessage);
-                    break;
-                case ComplianceLevel.Noncompliant:
-                    _logger.Warning("{evaluatedNetworkMessage}", evaluatedNetworkMessage);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(evaluatedNetworkMessage),$"Compliance level of {evaluatedNetworkMessage.ComplianceLevel} not handled");
-            }
-        }
+        public void SendEmail(string content) =>
+            _logger.Warning("{emailContent}", content);
+
+        public void SendEvaluatedNetworkMessage(EvaluatedNetworkMessage evaluatedNetworkMessage) =>
+            _logger.Information("{evaluatedNetworkMessage}", evaluatedNetworkMessage);
     }
 }
