@@ -6,16 +6,15 @@ namespace Squawk_Security.ClassLibrary.Models
 {
     public class MLComplianceChecker : IComplianceChecker
     {
+        private const string COMPLIANT_STRING = "Benign";
 
-
-        public bool Check(Packet getPacket)
+        public ComplianceLevel Check(ModelInput packetFeatures)
         {
-            throw new NotImplementedException();
-        }
+            var result = ConsumeModel.Predict(packetFeatures);
 
-        public bool Check(Packet getPacket, out ModelInput packetFeatures)
-        {
-            throw new NotImplementedException();
+            return result.Prediction.Contains(COMPLIANT_STRING)
+                ? ComplianceLevel.Compliant
+                : ComplianceLevel.Noncompliant;
         }
     }
 }
