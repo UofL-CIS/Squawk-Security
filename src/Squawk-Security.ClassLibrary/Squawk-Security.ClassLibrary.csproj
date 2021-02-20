@@ -10,4 +10,8 @@
     <PackageReference Include="SharpPcap" Version="5.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Squawk-SecurityML.Model\Squawk-SecurityML.Model.csproj" />
+  </ItemGroup>
+
 </Project>

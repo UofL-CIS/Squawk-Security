@@ -1,21 +1,23 @@
 ﻿using System;
-using System.Net;
-using PacketDotNet;
 using SharpPcap;
+using Squawk_SecurityML.Model;
 
 namespace Squawk_Security.ClassLibrary.Models
 {
     public class EvaluatedNetworkMessage
     {
         public readonly DateTime Timestamp;
-        public readonly RawCapture Capture;
         public readonly ComplianceLevel ComplianceLevel;
+        public readonly ModelInput PacketFeatures;
+        public readonly RawCapture PacketCapture;
 
-        public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, ComplianceLevel complianceLevel)
+        public EvaluatedNetworkMessage(DateTime timestamp, ComplianceLevel complianceLevel, ModelInput packetFeatures,
+            RawCapture packetCapture)
         {
             Timestamp = timestamp;
-            Capture = capture;
             ComplianceLevel = complianceLevel;
+            PacketFeatures = packetFeatures;
+            PacketCapture = packetCapture;
         }
     }
 }

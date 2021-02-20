@@ -26,7 +26,7 @@ namespace Squawk_Security.Tests
         {
             // Arrange
             var complianceLevel = isCompliant ? ComplianceLevel.Compliant : ComplianceLevel.Noncompliant;
-            var evaluatedNetworkMessage = new EvaluatedNetworkMessage(DateTime.Now, new RawCapture(LinkLayers.Ethernet, new PosixTimeval(DateTime.Now), Encoding.UTF8.GetBytes(packetData)), complianceLevel);
+            var evaluatedNetworkMessage = new EvaluatedNetworkMessage(DateTime.Now, complianceLevel, null, null);
 
             // Act
             _preventionService.Object.InvokeCountermeasures(evaluatedNetworkMessage);
