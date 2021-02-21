@@ -44,7 +44,7 @@ namespace Squawk_Security.WorkerService
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
-                    services.AddTransient<IComplianceChecker, MLComplianceChecker>();
+                    services.AddTransient<IComplianceChecker, RuleBasedComplianceChecker>();
                     services.AddScoped<ISniffingService, SharpPcapSniffingService>();
                     services.AddScoped<IAnalysisService, BasicAnalysisService>();
                     services.AddScoped<IPreventionService, DeAuthenticationPreventionService>();

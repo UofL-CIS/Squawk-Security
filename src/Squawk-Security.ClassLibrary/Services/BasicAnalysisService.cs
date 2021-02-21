@@ -14,9 +14,7 @@ namespace Squawk_Security.ClassLibrary.Services
         }
 
         public EvaluatedNetworkMessage AnalyzePacket(RawCapture capture) =>
-            _complianceChecker.Check(capture.GetPacket())
-                ? new EvaluatedNetworkMessage(capture.Timeval.Date, capture, ComplianceLevel.Compliant)
-                : new EvaluatedNetworkMessage(capture.Timeval.Date, capture, ComplianceLevel.Noncompliant);
+            new EvaluatedNetworkMessage(capture.Timeval.Date, capture, _complianceChecker.Check(capture));
 
         public Task<EvaluatedNetworkMessage> AnalyzePacketAsync(RawCapture capture) =>
             Task.Run(() => AnalyzePacket(capture));
