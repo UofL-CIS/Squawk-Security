@@ -2,7 +2,7 @@
 name: User Story
 about: Suggest a new feature or idea for this project
 title: "[User Story] As a X, I want Y so that Z"
-labels: enhancement
+labels: user story
 assignees: ''
 
 ---
