@@ -67,7 +67,7 @@ namespace Squawk_Security.WorkerService
                 _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);
             }
 
-            // Log Pcap
+            // Log Network Message
             _reportingService.SendEvaluatedNetworkMessage(evaluatedNetworkMessage);
         }
     }

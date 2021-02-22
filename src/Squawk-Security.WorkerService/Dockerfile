@@ -2,6 +2,9 @@
 
 FROM mcr.microsoft.com/dotnet/runtime:5.0-buster-slim AS base
 WORKDIR /app
+RUN apt-get update && \
+	apt install -y --allow-unauthenticated \
+		libpcap0.8
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
@@ -17,9 +20,4 @@ RUN dotnet publish "Squawk-Security.WorkerService.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-
-RUN apt-get update && \
-	apt install -y --allow-unauthenticated \
-		libpcap0.8
-
 ENTRYPOINT ["dotnet", "Squawk-Security.WorkerService.dll"]

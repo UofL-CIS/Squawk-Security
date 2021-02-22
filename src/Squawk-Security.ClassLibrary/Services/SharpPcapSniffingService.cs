@@ -3,6 +3,7 @@ using System.Linq;
 using PacketDotNet;
 using Serilog;
 using SharpPcap;
+using SharpPcap.LibPcap;
 using SharpPcap.Npcap;
 using Squawk_Security.ClassLibrary.Models.Exceptions;
 
@@ -11,7 +12,7 @@ namespace Squawk_Security.ClassLibrary.Services
     public class SharpPcapSniffingService : ISniffingService
     {
         private const LinkLayers DESIRED_LINK_LAYER = LinkLayers.Ethernet;
-        private readonly ICaptureDevice _captureDevice;
+        private readonly PcapDevice _captureDevice;
 
         public event EventHandler OnPcapArrival;
 
@@ -24,8 +25,12 @@ namespace Squawk_Security.ClassLibrary.Services
             
             foreach (var device in devices)
             {
-                if (IsConnectedDevice(device))
-                    _captureDevice = device;
+                // Ensure device is a PcapDevice, otherwise skip it
+                var pcapDevice = device as PcapDevice;
+                if (pcapDevice is null) continue;
+
+                if (IsConnectedDevice(pcapDevice))
+                    _captureDevice = pcapDevice;
 
                 // Exit loop early if found desired device
                 if (_captureDevice != null) break;
@@ -46,7 +51,10 @@ namespace Squawk_Security.ClassLibrary.Services
         public void StartListening()
         {
             _captureDevice.OnPacketArrival += CaptureDeviceOnOnPacketArrival;
-            _captureDevice.Open(DeviceMode.Promiscuous);
+
+            if (!_captureDevice.Opened)
+                _captureDevice.Open(DeviceMode.Promiscuous);
+
             _captureDevice.StartCapture();
         }
 
@@ -54,17 +62,19 @@ namespace Squawk_Security.ClassLibrary.Services
         {
             _captureDevice.OnPacketArrival -= CaptureDeviceOnOnPacketArrival;
             _captureDevice.StopCapture();
-            _captureDevice.Close();
+
+            if (_captureDevice.Opened)
+                _captureDevice.Close();
         }
 
         /// <summary>
         /// Check if device's link layer is DESIRED_LINK_LAYER and has a netmask starting with 255.
         /// </summary>
-        private bool IsConnectedDevice(ICaptureDevice device)
+        private bool IsConnectedDevice(PcapDevice device)
         {
             device.Open();
 
-            var result = device.LinkType == DESIRED_LINK_LAYER && ((NpcapDevice) device).Addresses.Any(pcapAddress =>
+            var result = device.LinkType == DESIRED_LINK_LAYER && device.Interface.Addresses.Any(pcapAddress =>
                 pcapAddress.Netmask?.ipAddress != null && pcapAddress.Netmask.ipAddress.ToString().StartsWith("255"));
 
             device.Close();
