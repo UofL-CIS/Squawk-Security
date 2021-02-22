@@ -61,7 +61,7 @@ namespace Squawk_Security.WorkerService
             if (evaluatedNetworkMessage.ComplianceLevel == ComplianceLevel.Noncompliant)
             {
                 // Notify administrator via email
-                _reportingService.SendEmail("Countermeasures were invoked");
+                _reportingService.SendAlert("Countermeasures were invoked", evaluatedNetworkMessage);
 
                 // Counter non-compliant packet source
                 _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);

@@ -7,7 +7,8 @@ namespace Squawk_Security.ClassLibrary
 {
     public interface IReportingService
     {
-        void SendEmail(string content);
+        void SendAlert(string content);
+        void SendAlert(string content, EvaluatedNetworkMessage evaluatedNetworkMessage);
         void SendEvaluatedNetworkMessage(EvaluatedNetworkMessage evaluatedNetworkMessage);
     }
 }

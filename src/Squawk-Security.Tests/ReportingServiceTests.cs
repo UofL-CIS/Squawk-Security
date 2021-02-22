@@ -39,7 +39,7 @@ namespace Squawk_Security.Tests
                     ;
 
                 // Act
-                _reportingService.Object.SendEmail(body);
+                _reportingService.Object.SendAlert(body);
             }
 
             var events = TestCorrelator.GetLogEventsFromCurrentContext().ToList();
