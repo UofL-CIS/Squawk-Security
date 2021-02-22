@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using Moq;
 using NUnit.Framework;
 using PacketDotNet;
@@ -46,7 +45,7 @@ namespace Squawk_Security.Tests
         }
 
         [Test]
-        public void PacketsAreSniffableTest()
+        public void PacketsAreSniffableFromMockTest()
         {
             //Arrange
             var packetSniffed = false;

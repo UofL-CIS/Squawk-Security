@@ -45,10 +45,10 @@ namespace Squawk_Security.WorkerService
                 {
                     services.AddHostedService<Worker>();
                     services.AddTransient<IComplianceChecker, RuleBasedComplianceChecker>();
-                    services.AddScoped<ISniffingService, SharpPcapSniffingService>();
-                    services.AddScoped<IAnalysisService, BasicAnalysisService>();
-                    services.AddScoped<IPreventionService, DeAuthenticationPreventionService>();
-                    services.AddScoped<IReportingService, SerilogReportingService>();
+                    services.AddSingleton<ISniffingService, SharpPcapSniffingService>();
+                    services.AddSingleton<IAnalysisService, BasicAnalysisService>();
+                    services.AddSingleton<IPreventionService, DeAuthenticationPreventionService>();
+                    services.AddSingleton<IReportingService, SerilogReportingService>();
                 });
     }
 }

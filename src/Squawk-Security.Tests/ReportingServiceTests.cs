@@ -35,7 +35,7 @@ namespace Squawk_Security.Tests
             // Arrange
             using (TestCorrelator.CreateContext())
             {
-                _reportingService = new Mock<IReportingService>(Log.Logger)
+                _reportingService = new Mock<IReportingService>()
                     ;
 
                 // Act
@@ -62,7 +62,7 @@ namespace Squawk_Security.Tests
 
             using (TestCorrelator.CreateContext())
             {
-                _reportingService = new Mock<IReportingService>(Log.Logger)
+                _reportingService = new Mock<IReportingService>()
                     ;
 
                 // Act

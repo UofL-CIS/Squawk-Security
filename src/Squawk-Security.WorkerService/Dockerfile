@@ -17,4 +17,9 @@ RUN dotnet publish "Squawk-Security.WorkerService.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN apt-get update && \
+	apt install -y --allow-unauthenticated \
+		libpcap0.8
+
 ENTRYPOINT ["dotnet", "Squawk-Security.WorkerService.dll"]
