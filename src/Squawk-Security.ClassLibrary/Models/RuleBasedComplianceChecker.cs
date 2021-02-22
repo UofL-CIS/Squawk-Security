@@ -12,7 +12,7 @@ namespace Squawk_Security.ClassLibrary.Models
         public ComplianceLevel Check(RawCapture capture)
         {
 #if DEBUG
-            return ComplianceLevel.Noncompliant;
+            return ComplianceLevel.Compliant;
 #endif
             throw new NotImplementedException();
         }

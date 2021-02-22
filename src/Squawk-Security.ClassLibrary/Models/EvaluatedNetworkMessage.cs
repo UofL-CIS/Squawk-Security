@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using PacketDotNet;
 using SharpPcap;
@@ -18,6 +19,8 @@ namespace Squawk_Security.ClassLibrary.Models
             Capture = capture;
             ComplianceLevel = complianceLevel;
         }
+
+        public string GetCaptureChecksum() => Capture.Data.Sum(x => x).ToString();
 
         public override string ToString() => this.PrintPropertiesAsString();
     }

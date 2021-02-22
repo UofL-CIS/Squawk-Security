@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Text.Json;
 
 namespace Squawk_Security.ClassLibrary.Extensions
 {
@@ -18,7 +15,7 @@ namespace Squawk_Security.ClassLibrary.Extensions
 
             foreach (var propertyInfo in properties)
             {
-                    sb.Append($"{propertyInfo.Name}: {propertyInfo.GetValue(obj)}{Environment.NewLine}");
+                sb.Append($"{propertyInfo.Name}: {propertyInfo.GetValue(obj)}{Environment.NewLine}");
             }
 
             foreach (var fieldInfo in fields)
