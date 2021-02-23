@@ -37,9 +37,30 @@ namespace Squawk_Security.WorkerService
             _sniffingService.OnPcapArrival += SniffingService_OnPcapArrival;
             _sniffingService.StartListening();
 
+            var statisticsCooldown = 0;
+
             // Continue service until requested to stop
             while (!stoppingToken.IsCancellationRequested)
             {
+                var captureStatistics = _sniffingService.CaptureStatistics;
+
+                if (_analysisService.Analyze(captureStatistics) == ComplianceLevel.Noncompliant)
+                {
+                    if (statisticsCooldown == 0)
+                    {
+                        _reportingService.SendAlert("Network statistics are non-compliant", captureStatistics);
+                        statisticsCooldown = 60;
+                    }
+                    else
+                    {
+                        statisticsCooldown--;
+                    }
+                }
+                else
+                {
+                    statisticsCooldown = 0;
+                }
+                
                 await Task.Delay(1000, stoppingToken);
             }
 
@@ -56,7 +77,7 @@ namespace Squawk_Security.WorkerService
             var capture = ((CaptureEventArgs)e).Packet;
 
             // Check packet for complianceLevel
-            var evaluatedNetworkMessage = _analysisService.AnalyzePacket(capture);
+            var evaluatedNetworkMessage = _analysisService.Analyze(capture);
 
             if (evaluatedNetworkMessage.ComplianceLevel == ComplianceLevel.Noncompliant)
             {

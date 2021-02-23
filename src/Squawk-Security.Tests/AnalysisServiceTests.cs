@@ -28,7 +28,7 @@ namespace Squawk_Security.Tests
         {
             var capture = new RawCapture(LinkLayers.Ethernet, new PosixTimeval(DateTime.Now), Encoding.UTF8.GetBytes(packetData));
 
-            var result = _analysisService.Object.AnalyzePacket(capture);
+            var result = _analysisService.Object.Analyze(capture);
 
             if (isCompliant)
                 Assert.IsTrue(result.ComplianceLevel == ComplianceLevel.Compliant);

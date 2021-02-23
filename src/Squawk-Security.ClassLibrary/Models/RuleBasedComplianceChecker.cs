@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PacketDotNet;
-using PacketDotNet.Ieee80211;
 using SharpPcap;
 
 namespace Squawk_Security.ClassLibrary.Models
@@ -13,6 +9,14 @@ namespace Squawk_Security.ClassLibrary.Models
         {
 #if DEBUG
             return ComplianceLevel.Compliant;
+#endif
+            throw new NotImplementedException();
+        }
+
+        public ComplianceLevel Check(ICaptureStatistics captureStatistics)
+        {
+#if DEBUG
+            return ComplianceLevel.Noncompliant;
 #endif
             throw new NotImplementedException();
         }

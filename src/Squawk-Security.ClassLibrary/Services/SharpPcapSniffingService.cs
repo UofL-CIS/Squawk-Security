@@ -4,7 +4,6 @@ using PacketDotNet;
 using Serilog;
 using SharpPcap;
 using SharpPcap.LibPcap;
-using SharpPcap.Npcap;
 using Squawk_Security.ClassLibrary.Models.Exceptions;
 
 namespace Squawk_Security.ClassLibrary.Services
@@ -13,6 +12,8 @@ namespace Squawk_Security.ClassLibrary.Services
     {
         private const LinkLayers DESIRED_LINK_LAYER = LinkLayers.Ethernet;
         private readonly PcapDevice _captureDevice;
+
+        public ICaptureStatistics CaptureStatistics => _captureDevice.Statistics;
 
         public event EventHandler OnPcapArrival;
 

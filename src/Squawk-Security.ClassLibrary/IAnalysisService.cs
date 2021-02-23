@@ -6,7 +6,9 @@ namespace Squawk_Security.ClassLibrary
 {
     public interface IAnalysisService
     {
-        EvaluatedNetworkMessage AnalyzePacket(RawCapture capture);
-        Task<EvaluatedNetworkMessage> AnalyzePacketAsync(RawCapture capture);
+        ComplianceLevel Analyze(ICaptureStatistics captureStatistics);
+        EvaluatedNetworkMessage Analyze(RawCapture capture);
+        Task<ComplianceLevel> AnalyzeAsync(ICaptureStatistics captureStatistics);
+        Task<EvaluatedNetworkMessage> AnalyzeAsync(RawCapture capture);
     }
 }
