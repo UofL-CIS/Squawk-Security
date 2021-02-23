@@ -22,7 +22,7 @@ namespace Squawk_Security.ClassLibrary.Services
             throw new NotImplementedException();
         }
 
-        public Task InvokeCountermeasuresAsync(EvaluatedNetworkMessage evaluatedNetworkMessage)
-            => Task.Run(() => InvokeCountermeasures(evaluatedNetworkMessage));
+        public Task InvokeCountermeasuresAsync(EvaluatedNetworkMessage evaluatedNetworkMessage) =>
+            Task.Run(() => InvokeCountermeasures(evaluatedNetworkMessage));
     }
 }
