@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using PacketDotNet;
 using SharpPcap;
 using Squawk_Security.ClassLibrary.Extensions;
 

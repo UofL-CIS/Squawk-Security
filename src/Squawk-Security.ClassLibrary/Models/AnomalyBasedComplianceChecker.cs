@@ -3,7 +3,7 @@ using SharpPcap;
 
 namespace Squawk_Security.ClassLibrary.Models
 {
-    public class RuleBasedComplianceChecker : IComplianceChecker
+    public class AnomalyBasedComplianceChecker : IComplianceChecker
     {
         public ComplianceLevel Check(RawCapture capture)
         {
