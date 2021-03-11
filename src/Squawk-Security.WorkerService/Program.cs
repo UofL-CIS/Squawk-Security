@@ -43,12 +43,12 @@ namespace Squawk_Security.WorkerService
                 .UseSerilog(Log.Logger)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
-                    services.AddTransient<IComplianceChecker, RuleBasedComplianceChecker>();
+                    services.AddTransient<IComplianceChecker, AnomalyBasedComplianceChecker>();
                     services.AddSingleton<ISniffingService, SharpPcapSniffingService>();
                     services.AddSingleton<IAnalysisService, BasicAnalysisService>();
                     services.AddSingleton<IPreventionService, DeAuthenticationPreventionService>();
                     services.AddSingleton<IReportingService, SerilogReportingService>();
+                    services.AddHostedService<Worker>();
                 });
     }
 }

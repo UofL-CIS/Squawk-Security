@@ -13,10 +13,16 @@ namespace Squawk_Security.ClassLibrary.Services
             _complianceChecker = complianceChecker;
         }
 
-        public EvaluatedNetworkMessage AnalyzePacket(RawCapture capture) =>
+        public ComplianceLevel Analyze(ICaptureStatistics captureStatistics) =>
+            _complianceChecker.Check(captureStatistics);
+
+        public EvaluatedNetworkMessage Analyze(RawCapture capture) =>
             new EvaluatedNetworkMessage(capture.Timeval.Date, capture, _complianceChecker.Check(capture));
 
-        public Task<EvaluatedNetworkMessage> AnalyzePacketAsync(RawCapture capture) =>
-            Task.Run(() => AnalyzePacket(capture));
+        public async Task<ComplianceLevel> AnalyzeAsync(ICaptureStatistics captureStatistics) =>
+            await Task.FromResult(Analyze(captureStatistics));
+
+        public async Task<EvaluatedNetworkMessage> AnalyzeAsync(RawCapture capture) =>
+            await Task.FromResult(Analyze(capture));
     }
 }
