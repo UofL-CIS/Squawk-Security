@@ -1,9 +1,10 @@
-﻿using SharpPcap;
+﻿using PacketDotNet;
+using SharpPcap;
 
 namespace Squawk_Security.ClassLibrary.Models
 {
     public interface IComplianceChecker
     {
-        (ComplianceLevel, string) Check(RawCapture capture);
+        (ComplianceLevel, string) Check(TcpPacket tcpPacket);
     }
 }

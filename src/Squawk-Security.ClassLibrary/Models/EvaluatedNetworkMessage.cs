@@ -11,27 +11,25 @@ namespace Squawk_Security.ClassLibrary.Models
     {
         public readonly DateTime Timestamp;
         public readonly ComplianceLevel ComplianceLevel;
-        public readonly RawCapture Capture;
+        public readonly string Details;
         public readonly string Reason;
 
-        public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, (ComplianceLevel, string) compliance)
+        public EvaluatedNetworkMessage(DateTime timestamp, string details, (ComplianceLevel, string) compliance)
         {
             Timestamp = timestamp;
-            Capture = capture;
+            Details = details;
 
             var (complianceLevel, reason) = compliance;
             ComplianceLevel = complianceLevel;
             Reason = reason;
         }
 
-        public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, ComplianceLevel complianceLevel)
+        public EvaluatedNetworkMessage(DateTime timestamp, string details, ComplianceLevel complianceLevel)
         {
             Timestamp = timestamp;
-            Capture = capture;
+            Details = details;
             ComplianceLevel = complianceLevel;
         }
-
-        public string GetCaptureChecksum() => Capture.Data.Sum(x => x).ToString();
 
         public override string ToString() => this.PrintPropertiesAsString();
     }

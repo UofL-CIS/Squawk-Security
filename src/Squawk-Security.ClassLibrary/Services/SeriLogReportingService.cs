@@ -21,14 +21,12 @@ namespace Squawk_Security.ClassLibrary.Services
 
         public void SendAlert(string content, EvaluatedNetworkMessage evaluatedNetworkMessage) =>
             _logger.Warning(
-                "[Alert] - {Content} | Evaluated Network Message: {Timestamp}; Compliance: {ComplianceLevel}; Link Layer: {LinkLayerType};",
-                content, evaluatedNetworkMessage.Timestamp, evaluatedNetworkMessage.ComplianceLevel,
-                evaluatedNetworkMessage.Capture.LinkLayerType, evaluatedNetworkMessage.GetCaptureChecksum());
+                "[Alert] - {Content} | Evaluated Network Message: {Timestamp}; Compliance: {ComplianceLevel}; Reason: {Reason}",
+                content, evaluatedNetworkMessage.Timestamp, evaluatedNetworkMessage.ComplianceLevel, evaluatedNetworkMessage.Reason, evaluatedNetworkMessage.Details);
 
         public void SendEvaluatedNetworkMessage(EvaluatedNetworkMessage evaluatedNetworkMessage) =>
             _logger.Information(
-                "Evaluated Network Message: {Timestamp}; Compliance: {ComplianceLevel}; Link Layer: {LinkLayerType}; Capture Checksum: {CaptureChecksum}",
-                evaluatedNetworkMessage.Timestamp, evaluatedNetworkMessage.ComplianceLevel,
-                evaluatedNetworkMessage.Capture.LinkLayerType, evaluatedNetworkMessage.GetCaptureChecksum());
+                "Evaluated Network Message: {Timestamp}; Compliance: {ComplianceLevel}",
+                evaluatedNetworkMessage.Timestamp, evaluatedNetworkMessage.ComplianceLevel, evaluatedNetworkMessage.Details);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 using PacketDotNet;
 using Serilog;
 using SharpPcap;
@@ -15,6 +16,8 @@ namespace Squawk_Security.ClassLibrary.Services
         private readonly PcapDevice _captureDevice;
 
         public event EventHandler OnPcapArrival;
+
+        public ICaptureStatistics CaptureStatistics => _captureDevice.Statistics;
 
         public SharpPcapSniffingService(ILogger logger)
         {
@@ -51,9 +54,11 @@ namespace Squawk_Security.ClassLibrary.Services
         public void StartListening()
         {
             _captureDevice.OnPacketArrival += CaptureDeviceOnOnPacketArrival;
-
+            
             if (!_captureDevice.Opened)
                 _captureDevice.Open(DeviceMode.Promiscuous);
+
+            _captureDevice.Filter = "ip and tcp";
 
             _captureDevice.StartCapture();
         }
@@ -72,17 +77,24 @@ namespace Squawk_Security.ClassLibrary.Services
         /// </summary>
         private bool IsConnectedDevice(PcapDevice device)
         {
-            device.Open();
+            try
+            {
+                device.Open();
 
-            var result = device.LinkType == DESIRED_LINK_LAYER && device.Interface.Addresses.Any(pcapAddress =>
-                pcapAddress.Netmask?.ipAddress != null && pcapAddress.Netmask.ipAddress.ToString().StartsWith("255"));
+                var result = device.LinkType == DESIRED_LINK_LAYER && device.Interface.Addresses.Any(pcapAddress =>
+                    pcapAddress.Netmask?.ipAddress != null && pcapAddress.Netmask.ipAddress.ToString().StartsWith("255"));
 
-            device.Close();
+                device.Close();
 
-            return result;
+                return result;
+            }
+            catch (PcapException e)
+            {
+                return false;
+            }
         }
 
         private void CaptureDeviceOnOnPacketArrival(object sender, CaptureEventArgs e) =>
-            OnPcapArrival(this, e);
+            OnPcapArrival?.Invoke(this, e);
     }
 }

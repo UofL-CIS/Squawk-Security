@@ -16,40 +16,41 @@ namespace Squawk_Security.ClassLibrary.Models
             _ruleSet = ruleSet;
         }
 
-        public (ComplianceLevel, string) Check(RawCapture capture)
+        public (ComplianceLevel, string) Check(TcpPacket tcpPacket)
         {
-            var packet = capture.GetPacket();
+            // Check for Blacklisted port
+            if (CheckIfBlacklistedPortUsed(tcpPacket, out var compliance))
+                return compliance;
 
-            if (packet is TcpPacket)
+            return (ComplianceLevel.Compliant, string.Empty);
+        }
+
+        private bool CheckIfBlacklistedPortUsed(TcpPacket tcpPacket, out (ComplianceLevel, string) compliance)
+        {
+            var destinationPort = tcpPacket.DestinationPort.ToString();
+            if (_ruleSet.DestinationPortBlacklist.ContainsKey(destinationPort)
+                && !_ruleSet.DestinationPortBlacklist[destinationPort])
             {
-                var tcpPacket = packet.Extract<TcpPacket>();
-                
-                // Check checksum integrity
-                if (!tcpPacket.ValidTcpChecksum)
                 {
-                    return (ComplianceLevel.Noncompliant, "Invalid TCP Checksum");
-                }
-
-                // Blacklisted port
-                var port = tcpPacket.DestinationPort.ToString();
-                if (_ruleSet.DestinationPortBlacklist.ContainsKey(port)
-                    && !_ruleSet.DestinationPortBlacklist[port])
-                {
-                    return (ComplianceLevel.Noncompliant, $"{tcpPacket.DestinationPort} is not allowed by rule set");
+                    compliance = (ComplianceLevel.Noncompliant,
+                        $"Outbound port ({tcpPacket.DestinationPort}) is not allowed by rule set");
+                    return true;
                 }
             }
 
-            //if (packet is InternetPacket)
-            //{
-            //    var internetPacket = packet.Extract<InternetPacket>();
-            //}
+            var Inbound = tcpPacket.DestinationPort.ToString();
+            if (_ruleSet.InboundPortBlacklist.ContainsKey(destinationPort)
+                && !_ruleSet.DestinationPortBlacklist[destinationPort])
+            {
+                {
+                    compliance = (ComplianceLevel.Noncompliant,
+                        $"Outbound port ({tcpPacket.DestinationPort}) is not allowed by rule set");
+                    return true;
+                }
+            }
 
-            //if (packet is IPPacket)
-            //{
-            //    var ipPacket = packet.Extract<IPPacket>();
-            //}
-
-            return (ComplianceLevel.Compliant, string.Empty);
+            compliance = (ComplianceLevel.Compliant, string.Empty);
+            return false;
         }
     }
 }
