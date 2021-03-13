@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
-using Squawk_Security.ClassLibrary.Models;
+using PacketDotNet;
+using SharpPcap;
+using Squawk_Security.ClassLibrary.Static;
 
 namespace Squawk_Security.ClassLibrary.Services
 {
@@ -13,16 +14,20 @@ namespace Squawk_Security.ClassLibrary.Services
             
         }
 
-        public void InvokeCountermeasures(EvaluatedNetworkMessage evaluatedNetworkMessage)
+        public void InvokeCountermeasures(RawCapture capture)
         {
-            #if DEBUG
+#if DEBUG
             return;
-            #endif
-            
+#endif
             throw new NotImplementedException();
+
+            var payloads = capture.ExtractPayloadsFromRawCapture();
+
+            var tcpPacket = payloads.FirstOrDefault(p => p is TcpPacket) as TcpPacket;
+            tcpPacket.Finished = true;
         }
 
-        public Task InvokeCountermeasuresAsync(EvaluatedNetworkMessage evaluatedNetworkMessage)
-            => Task.Run(() => InvokeCountermeasures(evaluatedNetworkMessage));
+        public Task InvokeCountermeasuresAsync(RawCapture capture)
+            => Task.Run(() => InvokeCountermeasures(capture));
     }
 }

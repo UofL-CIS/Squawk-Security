@@ -4,6 +4,7 @@ using PacketDotNet;
 using SharpPcap;
 using Squawk_Security.ClassLibrary.Extensions;
 using Squawk_Security.ClassLibrary.Models;
+using Squawk_Security.ClassLibrary.Static;
 
 namespace Squawk_Security.ClassLibrary.Services
 {
@@ -18,13 +19,7 @@ namespace Squawk_Security.ClassLibrary.Services
 
         public EvaluatedNetworkMessage AnalyzePacket(RawCapture capture)
         {
-            var targetPacket = capture.GetPacket();
-            var payloadPackets = new List<Packet> { targetPacket };
-            while (targetPacket.HasPayloadPacket)
-            {
-                targetPacket = targetPacket.PayloadPacket;
-                payloadPackets.Add(targetPacket);
-            }
+            var payloadPackets = capture.ExtractPayloadsFromRawCapture();
 
             foreach (var payloadPacket in payloadPackets)
             {
@@ -37,6 +32,7 @@ namespace Squawk_Security.ClassLibrary.Services
 
             return new EvaluatedNetworkMessage(capture.Timeval.Date, "Packet not checked", ComplianceLevel.Compliant);
         }
+
         public Task<EvaluatedNetworkMessage> AnalyzePacketAsync(RawCapture capture) =>
             Task.Run(() => AnalyzePacket(capture));
     }

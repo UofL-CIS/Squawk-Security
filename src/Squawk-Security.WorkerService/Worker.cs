@@ -68,7 +68,7 @@ namespace Squawk_Security.WorkerService
                 _reportingService.SendAlert("Countermeasures were invoked", evaluatedNetworkMessage);
 
                 // Counter non-compliant packet source
-                _preventionService.InvokeCountermeasures(evaluatedNetworkMessage);
+                _preventionService.InvokeCountermeasures(capture);
             }
 
             // Log Network Message
