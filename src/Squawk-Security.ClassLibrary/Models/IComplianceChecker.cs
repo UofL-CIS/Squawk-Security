@@ -4,6 +4,6 @@ namespace Squawk_Security.ClassLibrary.Models
 {
     public interface IComplianceChecker
     {
-        ComplianceLevel Check(RawCapture capture);
+        (ComplianceLevel, string) Check(RawCapture capture);
     }
 }

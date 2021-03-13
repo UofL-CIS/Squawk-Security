@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpPcap;
@@ -40,6 +41,7 @@ namespace Squawk_Security.WorkerService
             // Continue service until requested to stop
             while (!stoppingToken.IsCancellationRequested)
             {
+                Debug.WriteLine("Heartbeat");
                 await Task.Delay(1000, stoppingToken);
             }
 
@@ -52,6 +54,8 @@ namespace Squawk_Security.WorkerService
 
         private void SniffingService_OnPcapArrival(object sender, EventArgs e)
         {
+            Debug.WriteLine("Packet arrived");
+
             // This is a hardcoded dependency on SharpPcap.CaptureEventArgs
             var capture = ((CaptureEventArgs)e).Packet;
 

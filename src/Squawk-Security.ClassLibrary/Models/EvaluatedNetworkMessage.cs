@@ -12,6 +12,17 @@ namespace Squawk_Security.ClassLibrary.Models
         public readonly DateTime Timestamp;
         public readonly ComplianceLevel ComplianceLevel;
         public readonly RawCapture Capture;
+        public readonly string Reason;
+
+        public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, (ComplianceLevel, string) compliance)
+        {
+            Timestamp = timestamp;
+            Capture = capture;
+
+            var (complianceLevel, reason) = compliance;
+            ComplianceLevel = complianceLevel;
+            Reason = reason;
+        }
 
         public EvaluatedNetworkMessage(DateTime timestamp, RawCapture capture, ComplianceLevel complianceLevel)
         {
