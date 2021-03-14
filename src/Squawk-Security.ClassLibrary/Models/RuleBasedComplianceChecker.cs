@@ -28,8 +28,8 @@ namespace Squawk_Security.ClassLibrary.Models
         private bool CheckIfBlacklistedPortUsed(TcpPacket tcpPacket, out (ComplianceLevel, string) compliance)
         {
             var destinationPort = tcpPacket.DestinationPort.ToString();
-            if (_ruleSet.DestinationPortBlacklist.ContainsKey(destinationPort)
-                && !_ruleSet.DestinationPortBlacklist[destinationPort])
+            if (_ruleSet.AllowedOutboundDestinationPorts.ContainsKey(destinationPort)
+                && !_ruleSet.AllowedOutboundDestinationPorts[destinationPort])
             {
                 {
                     compliance = (ComplianceLevel.Noncompliant,
@@ -39,8 +39,8 @@ namespace Squawk_Security.ClassLibrary.Models
             }
 
             var Inbound = tcpPacket.DestinationPort.ToString();
-            if (_ruleSet.InboundPortBlacklist.ContainsKey(destinationPort)
-                && !_ruleSet.DestinationPortBlacklist[destinationPort])
+            if (_ruleSet.AllowedInboundDestinationPorts.ContainsKey(destinationPort)
+                && !_ruleSet.AllowedInboundDestinationPorts[destinationPort])
             {
                 {
                     compliance = (ComplianceLevel.Noncompliant,
