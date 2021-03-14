@@ -44,7 +44,7 @@ namespace Squawk_Security.ClassLibrary.Models
             {
                 {
                     compliance = (ComplianceLevel.Noncompliant,
-                        $"Outbound port ({tcpPacket.DestinationPort}) is not allowed by rule set");
+                        $"Inbound port ({tcpPacket.DestinationPort}) is not allowed by rule set");
                     return true;
                 }
             }
